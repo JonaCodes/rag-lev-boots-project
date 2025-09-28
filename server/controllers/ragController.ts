@@ -30,6 +30,7 @@ export const askQuestion = async (
     const answer = await ask(userQuestion);
     res.status(200).json({ answer });
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       answer: '',
       error: 'Failed to get answer for question',
