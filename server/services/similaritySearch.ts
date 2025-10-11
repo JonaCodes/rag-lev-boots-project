@@ -33,7 +33,8 @@ export const findSimilarChunks = async (
       1 - (embeddings_768 <=> '${vectorString}'::vector) as similarity
     FROM knowledge_base
     WHERE embeddings_768 IS NOT NULL
-    LIMIT ${limit}
+    ORDER BY 6 DESC
+    LIMIT ${limit};
   `;
 
   const results = await sequelize.query(query, {
