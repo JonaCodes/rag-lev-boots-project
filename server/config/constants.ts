@@ -9,7 +9,7 @@ export const LLM_CONFIG = {
 } as const;
 
 export const DATA_SOURCES = {
-  GIST: 'gist',
+  ARTICLE: 'article',
   PDF: 'pdf',
   SLACK: 'slack',
 } as const;

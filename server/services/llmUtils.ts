@@ -22,5 +22,10 @@ export const parseJSONFromString = (
     throw new Error(`Unable to locate JSON (${expectedType})`);
   }
 
-  return JSON5.parse(result.slice(start, end + 1));
+  try {
+    return JSON5.parse(result.slice(start, end + 1));
+  } catch (error) {
+    console.error(`Error parsing JSON: ${error}`);
+    throw new Error(`Error parsing JSON: ${error}`);
+  }
 };

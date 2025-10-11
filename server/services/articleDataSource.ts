@@ -1,10 +1,15 @@
 import axios from 'axios';
-import { DATA_SOURCES, GIST_BASE_URL, ARTICLE_IDS, PROCESSING_CONFIG } from '../config/constants';
+import {
+  DATA_SOURCES,
+  GIST_BASE_URL,
+  ARTICLE_IDS,
+  PROCESSING_CONFIG,
+} from '../config/constants';
 
 export interface ArticleData {
   id: string;
   content: string;
-  source: typeof DATA_SOURCES.GIST;
+  source: typeof DATA_SOURCES.ARTICLE;
   url: string;
 }
 
@@ -23,7 +28,7 @@ export const fetchArticle = async (
     return {
       id: articleId,
       content: response.data,
-      source: DATA_SOURCES.GIST,
+      source: DATA_SOURCES.ARTICLE,
       url,
     };
   } catch (error) {
@@ -32,7 +37,7 @@ export const fetchArticle = async (
   }
 };
 
-export const fetchAllArticles = async (): Promise<ArticleData[]> => {
+export const loadArticles = async (): Promise<ArticleData[]> => {
   const fetchPromises = ARTICLE_IDS.map((id, index) =>
     fetchArticle(index + 1, id)
   );
@@ -65,6 +70,6 @@ export const fetchAllArticles = async (): Promise<ArticleData[]> => {
     return successful;
   } catch (error) {
     console.error('Error fetching articles:', error);
-    throw error;
+    return [];
   }
 };

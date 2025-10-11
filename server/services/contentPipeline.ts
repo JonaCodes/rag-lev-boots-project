@@ -1,95 +1,29 @@
-import { chunkContentByWords, ContentChunk } from './chunkingService';
+import { chunkContentByWords } from './chunkingService';
 import { embedContent } from './llmService';
 import { PROCESSING_CONFIG } from '../config/constants';
+import { sleep } from '../utils/utils';
 
-export interface ProcessedContentChunk {
-  source: string;
-  sourceId: string;
-  chunkIndex: number;
-  chunkContent: string;
-  embeddings: number[];
-}
-
-export interface ContentMetadata {
-  source: string;
-  sourceId: string;
-  content: string;
-}
-
-export const processContent = async (
-  metadata: ContentMetadata
-): Promise<ProcessedContentChunk[]> => {
-  const { source, sourceId, content } = metadata;
-
-  console.log(`Processing content for ${source}:${sourceId}...`);
-
-  const chunks: ContentChunk[] = chunkContentByWords(
-    content,
-    PROCESSING_CONFIG.CHUNK_WORD_COUNT
-  );
-  const processedChunks: ProcessedContentChunk[] = [];
-
-  for (let i = 0; i < chunks.length; i++) {
-    const chunk = chunks[i];
-
-    try {
-      const embeddings = await embedContent(chunk.content);
-      const embeddingVector = embeddings?.[0]?.values;
-
-      if (!embeddingVector || embeddingVector.length === 0) {
-        throw new Error('Embedding vector is empty or undefined');
-      }
-
-      processedChunks.push({
-        source,
-        sourceId,
-        chunkIndex: i,
-        chunkContent: chunk.content,
-        embeddings: embeddingVector,
-      });
-
-      // Add a small delay to avoid hitting rate limits
-      await new Promise((resolve) =>
-        setTimeout(resolve, PROCESSING_CONFIG.RATE_LIMIT_DELAY)
-      );
-    } catch (error) {
-      console.error(
-        `Failed to generate embeddings for ${sourceId} chunk ${i}:`,
-        error
-      );
-      throw new Error(`Failed to process chunk ${i} for ${sourceId}: ${error}`);
-    }
-  }
-
-  console.log(
-    `Successfully processed ${processedChunks.length} chunks for ${sourceId}`
-  );
-  return processedChunks;
+export const chunkText = (text: string): string[] => {
+  const chunks = chunkContentByWords(text, PROCESSING_CONFIG.CHUNK_WORD_COUNT);
+  return chunks.map((chunk) => chunk.content);
 };
 
-export const processBatchContent = async (
-  contentItems: ContentMetadata[]
-): Promise<ProcessedContentChunk[]> => {
-  console.log(`Processing ${contentItems.length} content items...`);
-  if (contentItems.length === 0) return [];
+export const embedChunks = async (chunks: string[]): Promise<number[][]> => {
+  const embeddings: number[][] = [];
 
-  const allProcessedChunks: ProcessedContentChunk[] = [];
+  for (const chunk of chunks) {
+    const result = await embedContent(chunk);
+    const embeddingVector = result?.[0]?.values;
 
-  for (const contentMetadata of contentItems) {
-    try {
-      const processedChunks = await processContent(contentMetadata);
-      allProcessedChunks.push(...processedChunks);
-    } catch (error) {
-      console.error(
-        `Failed to process content ${contentMetadata.sourceId}:`,
-        error
-      );
-      // Continue processing other items even if one fails
+    if (!embeddingVector || embeddingVector.length === 0) {
+      console.error('Failed to generate embedding for chunk, skipping');
+      embeddings.push([]);
+    } else {
+      embeddings.push(embeddingVector);
     }
+
+    await sleep(PROCESSING_CONFIG.RATE_LIMIT_DELAY);
   }
 
-  console.log(
-    `Processed ${allProcessedChunks.length} total chunks from ${contentItems.length} content items`
-  );
-  return allProcessedChunks;
+  return embeddings;
 };
