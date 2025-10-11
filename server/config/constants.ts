@@ -30,3 +30,9 @@ export const PROCESSING_CONFIG = {
   HTTP_TIMEOUT: 10000,
   RATE_LIMIT_DELAY: 100,
 } as const;
+
+export const PDF_FILES = [
+  'OpEd - A Revolution at Our Feet.pdf',
+  'Research Paper - Gravitational Reversal Physics.pdf',
+  'White Paper - The Development of Localized Gravity Reversal Technology.pdf',
+] as const;
