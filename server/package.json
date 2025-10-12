@@ -7,11 +7,13 @@
     "dev": "tsx watch server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
+    "mcp": "tsx mcp/server.ts",
     "migrate": "npx sequelize-cli db:migrate --config config/config.cjs",
     "migrate:create": "npx sequelize-cli migration:generate --config config/config.cjs"
   },
   "dependencies": {
     "@google/genai": "^1.21.0",
+    "@modelcontextprotocol/sdk": "^1.20.0",
     "axios": "^1.12.2",
     "dotenv": "^16.4.5",
     "express": "^4.21.2",
@@ -19,7 +21,8 @@
     "path": "^0.12.7",
     "pdf-parse": "^2.2.7",
     "pg": "^8.12.0",
-    "sequelize": "^6.37.6"
+    "sequelize": "^6.37.6",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
