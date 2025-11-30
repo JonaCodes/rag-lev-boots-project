@@ -30,6 +30,9 @@ Your entry point is in `ragService.ts`
 
 ## Setup
 
+### Database
+You will need your own postgres database for this project. If you don't have one set up locally, I **highly recommend** using [supabase](https://supabase.com/) - it takes 90 seconds to set up and get the credentials.
+
 ### Environment Variables
 
 Create a `.env` file in the project root with DATABASE_URL and GEMINI_API_KEY
