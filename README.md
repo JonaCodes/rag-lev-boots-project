@@ -4,7 +4,7 @@
 - Run `npm i`
 - Create a `.env` file inside your `/server` directory with your `DATABASE_URL`
   connection string
-- Run `npm run dev` - runs the front and backend concurrently with hot module
+- Run `npm run dev` in the *root* directory - this runs the front and backend concurrently with hot module
   and auto server reload
 - See the UI at [http://localhost:5173/](http://localhost:5173/)
 
