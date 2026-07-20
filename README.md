@@ -1,3 +1,11 @@
+# Lev-Boots RAG Project
+
+New to this repository? Start with the short handoff guide:
+[docs/HANDOFF.md](docs/HANDOFF.md)
+
+For the deeper backend pipeline explanation, see:
+[docs/RAG_FLOW.md](docs/RAG_FLOW.md)
+
 # Running the project
 
 - Ensure `concurrently` is installed (`npm install concurrently --save-dev`)

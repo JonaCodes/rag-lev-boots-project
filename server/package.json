@@ -8,18 +8,22 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "migrate": "npx sequelize-cli db:migrate --config config/config.cjs",
-    "migrate:create": "npx sequelize-cli migration:generate --config config/config.cjs"
+    "migrate:create": "npx sequelize-cli migration:generate --config config/config.cjs",
+    "ingest": "tsx ingest.ts",
+    "reingest": "tsx clear-and-ingest.ts"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.2",
-    "path": "^0.12.7",
+    "pdf-parse": "^2.4.5",
     "pg": "^8.12.0",
     "sequelize": "^6.37.6"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@types/node": "^22.13.1",
+    "@types/pdf-parse": "^1.1.5",
     "@types/pg": "^8.11.6",
     "eslint": "^9.19.0",
     "globals": "^15.14.0",

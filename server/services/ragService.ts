@@ -1,9 +1,22 @@
-// Make sure you've reviewd the README.md file to understand the task and the RAG flow
+import { ingestAllData } from './rag/ingestionService';
+import { retrieveRelevantChunks } from './rag/retrievalService';
+import { generateAnswer } from './rag/generationService';
+import { getCachedAnswer, setCachedAnswer } from './rag/answerCache';
+import { IngestionStats } from './rag/types';
 
-export const loadAllData = async () => {};
+export const loadAllData = async (): Promise<IngestionStats> => {
+  return await ingestAllData();
+};
 
 export const ask = async (userQuestion: string): Promise<string> => {
-  const placeholderAnswer = `Generate the answer based off the ${userQuestion}`;
+  const cached = getCachedAnswer(userQuestion);
+  if (cached !== undefined) {
+    return cached;
+  }
 
-  return placeholderAnswer;
+  const chunks = await retrieveRelevantChunks(userQuestion);
+  const answer = await generateAnswer(userQuestion, chunks);
+  setCachedAnswer(userQuestion, answer);
+  return answer;
 };
+

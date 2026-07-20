@@ -57,6 +57,18 @@ KnowledgeBase.init(
       type: DataTypes.TEXT,
       allowNull: false,
     },
+    // NOTE: the real Postgres column type is native pgvector `vector(768)` /
+    // `vector(1536)` (see migrations/20250927100126-create-embeddings-table),
+    // not an array. DataTypes.ARRAY(REAL) here is a placeholder that only
+    // exists so Sequelize's model layer knows the column names for INSERT
+    // purposes. Every actual read and write of these columns deliberately
+    // bypasses this declared type via raw SQL / parameterized `CAST(... AS
+    // vector)` (see ingestionService.ts and retrievalService.ts) — pgvector's
+    // textual output (`[0.1,0.2,...]`) doesn't match what ARRAY(REAL) expects
+    // (`{0.1,0.2,...}`), so calling `.findAll()`/`.findOne()` on this model
+    // and expecting a normal JS array back would break. Don't "fix" this by
+    // removing the raw-SQL bypass without also introducing a real pgvector
+    // Sequelize type.
     embeddings_768: {
       type: DataTypes.ARRAY(DataTypes.REAL),
       allowNull: true,
