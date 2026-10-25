@@ -13,13 +13,11 @@ export const askGemini = async (
   try {
     const result = await gemini.models.generateContent({
       model,
-      contents: [
-        { role: 'model', parts: [{ text: systemPrompt }] }, // model == system
-        { role: 'user', parts: [{ text: userPrompt }] },
-      ],
+      contents: userPrompt,
       config: {
+        systemInstruction: systemPrompt,
         thinkingConfig: {
-          thinkingBudget: LLM_CONFIG.thinkingBudget,
+          thinkingLevel: LLM_CONFIG.thinkingLevel,
         },
       },
     });

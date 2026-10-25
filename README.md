@@ -82,22 +82,22 @@ You will also need API access to an LLM. You can use any you like, but if you
 want something for free (with rate limiting), you can use Google's Gemini
 
 - Here is a simple guide to setting it up:
-  https://ai.google.dev/gemini-api/docs/quickstart#javascript
+  https://ai.google.dev/gemini-api/docs/generate-content/text-generation
 - You will need an API key which you can get for free here:
   https://aistudio.google.com/app/apikey?
   - Press the `Create API Key` button on the top right
-- **Note** as per the Gemini documentation, you can reduce token usage (hence
-  increase your rate limit) by disabling thinking. For this project, it's safe
-  to turn thinking off.
-  - To turn thinking off, add the following to your API request:
+- Use `gemini-3.8-flash` for generation. To reduce thinking effort and latency,
+  import `ThinkingLevel` from `@google/genai` and add this to your request:
 
-```
+```js
     config: {
       thinkingConfig: {
-        thinkingBudget: 0, // Disables thinking
+        thinkingLevel: ThinkingLevel.LOW,
       },
     }
 ```
+
+This model supports low thinking, rather than disabling thinking with `thinkingBudget: 0`.
 
 ---
 
