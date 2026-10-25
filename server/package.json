@@ -12,7 +12,7 @@
     "migrate:create": "npx sequelize-cli migration:generate --config config/config.cjs"
   },
   "dependencies": {
-    "@google/genai": "^1.21.0",
+    "@google/genai": "1.30.0",
     "@modelcontextprotocol/sdk": "^1.20.0",
     "axios": "^1.12.2",
     "dotenv": "^16.4.5",
