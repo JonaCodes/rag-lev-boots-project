@@ -1,5 +1,4 @@
 import { ContentEmbedding, GoogleGenAI } from '@google/genai';
-import { LLM_CONFIG } from '../config/constants';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -16,9 +15,6 @@ export const askGemini = async (
       contents: userPrompt,
       config: {
         systemInstruction: systemPrompt,
-        thinkingConfig: {
-          thinkingLevel: LLM_CONFIG.thinkingLevel,
-        },
       },
     });
 

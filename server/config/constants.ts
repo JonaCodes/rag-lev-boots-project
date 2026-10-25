@@ -1,9 +1,6 @@
-import { ThinkingLevel } from '@google/genai';
-
-export const GEMINI_MODEL = 'gemini-3.8-flash';
+export const GEMINI_MODEL = 'gemini-3.5-flash-lite';
 
 export const LLM_CONFIG = {
-  thinkingLevel: ThinkingLevel.LOW,
   RESPONSE_TYPES: {
     OBJECT: 'object',
     ARRAY: 'array',
